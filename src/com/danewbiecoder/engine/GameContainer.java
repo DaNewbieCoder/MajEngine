@@ -1,7 +1,6 @@
 package com.danewbiecoder.engine;
 
-import java.awt.event.KeyEvent;
-import java.sql.SQLOutput;
+
 
 public class GameContainer implements Runnable {
     private Thread thread;
@@ -60,13 +59,13 @@ public class GameContainer implements Runnable {
                     frameTime = 0;
                     fps = frames;
                     frames = 0;
-                    //System.out.println("FPS: " + fps);
+                    System.out.println("FPS: " + fps);
                 }
             }
             if (render) {
                 renderer.clear();
-                //renderer.cycleColors();
                 game.render(this, renderer);
+                renderer.drawText("FPS: " + fps, 0,0,0xFF00FFFF);
                 gameWindow.update();
                 frames++;
             } else {

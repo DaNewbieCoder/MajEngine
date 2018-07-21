@@ -1,6 +1,7 @@
 package com.danewbiecoder.engine;
 
 
+import com.danewbiecoder.engine.gfx.Font;
 import com.danewbiecoder.engine.gfx.Image;
 import com.danewbiecoder.engine.gfx.ImageTile;
 
@@ -9,6 +10,7 @@ import java.awt.image.DataBufferInt;
 public class Render {
     private int pixelWidth, pixelHeight;
     private int[] pixels;
+    private Font font = Font.STANDARD;
 
     public Render(GameContainer gameContainer) {
         pixelWidth = gameContainer.getWidth();
@@ -33,6 +35,22 @@ public class Render {
             return;
         }
         pixels[x + y * pixelWidth] = value;
+    }
+
+    public void drawText(String text, int offsetX, int offsetY, int color) {
+        text = text.toUpperCase();
+        int offset = 0;
+        for (int i = 0; i < text.length(); i++) {
+            int unicode = text.codePointAt(i) - 32;
+            for (int y = 0; y < font.getFontImage().getHeight(); y++) {
+                for (int x = 0; x < font.getWidth()[unicode]; x++) {
+                    if (font.getFontImage().getPixels()[(x + font.getOffset()[unicode]) + y * font.getFontImage().getWidth()] == 0xFFFFFFFF) {
+                        setPixels(x + offsetX + offset, y + offsetY, color);
+                    }
+                }
+            }
+            offset += font.getWidth()[unicode];
+        }
     }
     public void drawImageTile(ImageTile image, int offsetX, int offsetY, int tileX, int tileY) {
         if (offsetX < -image.getTileWidth()) {return;}
