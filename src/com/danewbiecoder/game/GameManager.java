@@ -51,7 +51,7 @@ public class GameManager extends AbstractGame {
         System.out.println("Frame: " + (int)frame);
         if (gameContainer.getInput().isKey(KeyEvent.VK_LEFT)) {
             //stand left
-            System.out.println("Youre1 moving left.");
+            System.out.println("Youre moving left.");
         } else if (gameContainer.getInput().isKeyDown(KeyEvent.VK_RIGHT)) {
             //animate right
             System.out.println("Youre moving right.");

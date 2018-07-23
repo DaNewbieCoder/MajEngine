@@ -1,6 +1,7 @@
 package com.danewbiecoder.engine;
 
 
+import java.awt.*;
 
 public class GameContainer implements Runnable {
     private Thread thread;
@@ -11,9 +12,10 @@ public class GameContainer implements Runnable {
     private boolean running = false;
 
     private final double UPDATE_CAP = 1.0 / 60.0d;
-    private int width =320, height = 240 ;
-    private float scale = 3;
+    private int width = 320, height = 240;
+    private float scale = 2;
     private String title = "MajGame Engine 1.0";
+
     public GameContainer(AbstractGame game) {
         this.game = game;
 
@@ -52,7 +54,7 @@ public class GameContainer implements Runnable {
             while (unprocessedTime >= UPDATE_CAP) {
                 unprocessedTime -= UPDATE_CAP;
                 render = true;
-                game.update(this, (float)UPDATE_CAP);
+                game.update(this, (float) UPDATE_CAP);
                 input.update();
 
                 if (frameTime >= 1) {
@@ -65,7 +67,11 @@ public class GameContainer implements Runnable {
             if (render) {
                 renderer.clear();
                 game.render(this, renderer);
-                renderer.drawText("FPS: " + fps, 0,0,0xFF00FFFF);
+                renderer.drawText("FPS: " + fps, 0, 0, 0xFF00FFFF);
+                renderer.drawText("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG. 1234567890", 0, 100, -1);
+                renderer.drawText("1234567890", 0, 111, -1);
+                renderer.drawText("Bull;y the quick brown fox jumps over the lazy dog.", 0, 122, -1);
+                renderer.drawText("!@#$%^&*()_+{}[]-=;':<>,.?/ ducking!", 0, 133, -1);
                 gameWindow.update();
                 frames++;
             } else {
