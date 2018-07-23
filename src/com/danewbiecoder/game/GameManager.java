@@ -3,6 +3,7 @@ package com.danewbiecoder.game;
 import com.danewbiecoder.engine.AbstractGame;
 import com.danewbiecoder.engine.GameContainer;
 import com.danewbiecoder.engine.Render;
+import com.danewbiecoder.engine.audio.SoundClip;
 import com.danewbiecoder.engine.gfx.Image;
 import com.danewbiecoder.engine.gfx.ImageTile;
 
@@ -14,6 +15,7 @@ public class GameManager extends AbstractGame {
     private ImageTile tileOne;
     private ImageTile megaMan;
     private boolean blink;
+    private SoundClip hail;
 
 
     public GameManager() {
@@ -21,6 +23,7 @@ public class GameManager extends AbstractGame {
         background = new Image("/background.png");
         tileOne = new ImageTile("/tileset.png", 16, 16);
         megaMan = new ImageTile("/megaman.png", 32, 32);
+        hail = new SoundClip("/audio/hail.wav");
     }
 
     @Override
@@ -50,6 +53,7 @@ public class GameManager extends AbstractGame {
         render.drawImageTile(tileOne, gameContainer.getInput().getMouseX() - 9, gameContainer.getInput().getMouseY() - 9, (int) frame, 0);
         System.out.println("Frame: " + (int)frame);
         if (gameContainer.getInput().isKey(KeyEvent.VK_LEFT)) {
+            if (!hail.isRunning()) hail.play();
             //stand left
             System.out.println("Youre moving left.");
         } else if (gameContainer.getInput().isKeyDown(KeyEvent.VK_RIGHT)) {
