@@ -51,7 +51,8 @@ public class Render {
             offset += font.getWidth()[unicode];
         }
     }
-//    public void drawText(String text, int offsetX, int offsetY, int color) {
+
+    //    public void drawText(String text, int offsetX, int offsetY, int color) {
 //        text = text.toUpperCase();
 //        int offset = 0;
 //        for (int i = 0; i < text.length(); i++) {
@@ -67,10 +68,18 @@ public class Render {
 //        }
 //    }
     public void drawImageTile(ImageTile image, int offsetX, int offsetY, int tileX, int tileY) {
-        if (offsetX < -image.getTileWidth()) {return;}
-        if (offsetX >= pixelWidth) {return;}
-        if (offsetY < -image.getTileHeight()) {return;}
-        if (offsetY >= pixelHeight) {return;}
+        if (offsetX < -image.getTileWidth()) {
+            return;
+        }
+        if (offsetX >= pixelWidth) {
+            return;
+        }
+        if (offsetY < -image.getTileHeight()) {
+            return;
+        }
+        if (offsetY >= pixelHeight) {
+            return;
+        }
 
         int newX = 0;
         int newY = 0;
@@ -96,14 +105,45 @@ public class Render {
         }
     }
 
+    public void drawRect(int offX, int offY, int height, int width, int color) {
+        for (int x = 0; x <= width; x++) {
+            setPixels(x + offX, offY, color);
+            setPixels(x + offX, offY + height, color);
+        }
+        for (int y = 0; y <= height; y++) {
+            setPixels(offX, y + offY, color);
+            setPixels(offX + width, y + offY, color);
+        }
+    }
+
+    public void drawFilledRect(int offX, int offY, int height, int width, int color) {
+        for (int x = 0; x <= width; x++) {
+            for (int y = 0; y <= height; y++) {
+                setPixels(x + offX, y + offY, color);
+                setPixels(x + offX, y + offY , color);
+            }
+        }
+    }
+
+//    public void drawFilledRect() {
+//
+//    }
 
     public void drawImage(Image image, int offsetX, int offsetY) {
 
         //Don't render code
-        if (offsetX < -image.getWidth()) {return;}
-        if (offsetX >= pixelWidth) {return;}
-        if (offsetY < -image.getHeight()) {return;}
-        if (offsetY >= pixelHeight) {return;}
+        if (offsetX < -image.getWidth()) {
+            return;
+        }
+        if (offsetX >= pixelWidth) {
+            return;
+        }
+        if (offsetY < -image.getHeight()) {
+            return;
+        }
+        if (offsetY >= pixelHeight) {
+            return;
+        }
         int newX = 0;
         int newY = 0;
         int newWidth = image.getWidth();

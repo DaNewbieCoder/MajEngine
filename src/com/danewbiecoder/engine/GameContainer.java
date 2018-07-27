@@ -68,10 +68,12 @@ public class GameContainer implements Runnable {
                 renderer.clear();
                 game.render(this, renderer);
                 renderer.drawText("FPS: " + fps, 0, 0, 0xFF00FFFF);
-                renderer.drawText("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG. 1234567890", 0, 100, -1);
+                renderer.drawText("THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG.", 0, 100, -1);
                 renderer.drawText("1234567890", 0, 111, -1);
-                renderer.drawText("Bull;y the quick brown fox jumps over the lazy dog.", 0, 122, -1);
+                renderer.drawText("Bully the quick brown fox jumps over the lazy dog.", 0, 122, -1);
                 renderer.drawText("!@#$%^&*()_+{}[]-=;':<>,.?/ ducking!", 0, 133, -1);
+                renderer.drawFilledRect(50, 50, 19, 29, -1);
+                renderer.drawRect(50, 50, 19, 29, 255);
                 gameWindow.update();
                 frames++;
             } else {
