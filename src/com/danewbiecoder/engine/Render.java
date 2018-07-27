@@ -31,7 +31,7 @@ public class Render {
     }
 
     public void setPixels(int x, int y, int value) {
-        if ((x < 0 || x >= pixelWidth || y < 0 || y >= pixelHeight) || value == 0xffa6a6a6) {
+        if ((x < 0 || x >= pixelWidth || y < 0 || y >= pixelHeight) || ((value >> 24) & 0xff) == 0) {
             return;
         }
         pixels[x + y * pixelWidth] = value;
@@ -52,52 +52,22 @@ public class Render {
         }
     }
 
-    //    public void drawText(String text, int offsetX, int offsetY, int color) {
-//        text = text.toUpperCase();
-//        int offset = 0;
-//        for (int i = 0; i < text.length(); i++) {
-//            int unicode = text.codePointAt(i) - 32;
-//            for (int y = 0; y < font.getFontImage().getHeight(); y++) {
-//                for (int x = 0; x < font.getWidth()[unicode]; x++) {
-//                    if (font.getFontImage().getPixels()[(x + font.getOffset()[unicode]) + y * font.getFontImage().getWidth()] == 0xFFFFFFFF) {
-//                        setPixels(x + offsetX + offset, y + offsetY, color);
-//                    }
-//                }
-//            }
-//            offset += font.getWidth()[unicode];
-//        }
-//    }
     public void drawImageTile(ImageTile image, int offsetX, int offsetY, int tileX, int tileY) {
-        if (offsetX < -image.getTileWidth()) {
-            return;
-        }
-        if (offsetX >= pixelWidth) {
-            return;
-        }
-        if (offsetY < -image.getTileHeight()) {
-            return;
-        }
-        if (offsetY >= pixelHeight) {
-            return;
-        }
+        if (offsetX < -image.getTileWidth()) {return;}
+        if (offsetX >= pixelWidth) {return;}
+        if (offsetY < -image.getTileHeight()) {return;}
+        if (offsetY >= pixelHeight) {return;}
 
         int newX = 0;
         int newY = 0;
         int newWidth = image.getTileWidth();
         int newHeight = image.getTileHeight();
 
-        if (newX + offsetX < 0) {
-            newX -= offsetX;
-        }
-        if (newY + offsetY < 0) {
-            newY -= offsetY;
-        }
-        if (newWidth + offsetX > pixelWidth) {
-            newWidth -= newWidth + offsetX - pixelWidth;
-        }
-        if (newHeight + offsetY > pixelHeight) {
-            newHeight -= newHeight + offsetY - pixelHeight;
-        }
+        if (newX + offsetX < 0) {newX -= offsetX;}
+        if (newY + offsetY < 0) {newY -= offsetY;}
+        if (newWidth + offsetX > pixelWidth) {newWidth -= newWidth + offsetX - pixelWidth;}
+        if (newHeight + offsetY > pixelHeight) {newHeight -= newHeight + offsetY - pixelHeight;}
+
         for (int y = newY; y < newHeight; y++) {
             for (int x = newX; x < newWidth; x++) {
                 setPixels(x + offsetX, y + offsetY, image.getPixels()[(x + tileX * image.getTileWidth()) + (y + tileY * image.getTileHeight()) * image.getWidth()]);
@@ -105,22 +75,36 @@ public class Render {
         }
     }
 
-    public void drawRect(int offX, int offY, int height, int width, int color) {
+    public void drawRect(int offsetX, int offsetY, int height, int width, int color) {
+
         for (int x = 0; x <= width; x++) {
-            setPixels(x + offX, offY, color);
-            setPixels(x + offX, offY + height, color);
+            setPixels(x + offsetX, offsetY, color);
+            setPixels(x + offsetX, offsetY + height, color);
         }
         for (int y = 0; y <= height; y++) {
-            setPixels(offX, y + offY, color);
-            setPixels(offX + width, y + offY, color);
+            setPixels(offsetX, y + offsetY, color);
+            setPixels(offsetX + width, y + offsetY, color);
         }
     }
 
-    public void drawFilledRect(int offX, int offY, int height, int width, int color) {
-        for (int x = 0; x <= width; x++) {
-            for (int y = 0; y <= height; y++) {
-                setPixels(x + offX, y + offY, color);
-                setPixels(x + offX, y + offY , color);
+    public void drawFilledRect(int offsetX, int offsetY, int height, int width, int color) {
+        if (offsetX < -width) {return;}
+        if (offsetX >= pixelWidth) {return;}
+        if (offsetY < -height) {return;}
+        if (offsetY >= pixelHeight) {return;}
+
+        int newX = 0;
+        int newY = 0;
+        int newWidth = width;
+        int newHeight = height;
+
+        if (newX + offsetX < 0) {newX -= offsetX;}
+        if (newY + offsetY < 0) {newY -= offsetY;}
+        if (newWidth + offsetX > pixelWidth) {newWidth -= newWidth + offsetX - pixelWidth;}
+        if (newHeight + offsetY > pixelHeight) {newHeight -= newHeight + offsetY - pixelHeight;}
+        for (int x = newX; x <= newWidth; x++) {
+            for (int y = newY; y <= newHeight; y++) {
+                setPixels(x + offsetX, y + offsetY, color);
             }
         }
     }

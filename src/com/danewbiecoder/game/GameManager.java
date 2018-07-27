@@ -14,7 +14,7 @@ public class GameManager extends AbstractGame {
     private Image background;
     private ImageTile tileOne;
     private ImageTile megaMan;
-    private boolean blink;
+    private int blink;
     private SoundClip hail;
 
 
@@ -28,45 +28,31 @@ public class GameManager extends AbstractGame {
 
     @Override
     public void update(GameContainer gameContainer, float delta) {
-        String facing;
-        if (gameContainer.getInput().isKeyDown(KeyEvent.VK_LEFT)) {
-            System.out.println("Left was pressed");
-            facing = "left";
-        } else if (gameContainer.getInput().isKeyDown(KeyEvent.VK_RIGHT)) {
-            System.out.println("Right was pressed");
-            facing = "right";
-        }
         frame += delta * 15;
-        if (frame >= 30) {
-            System.out.println("Blinked!");
-            blink = true;
+        if (frame == 60) {
+            blink = 1;
+            System.out.println("Blinked");
             frame = 0;
-        } else if (frame == 0) {
-            blink =  false;
+        } else if (frame == 1) {
+            blink = 0;
         }
-
     }
+
     float frame = 0;
+
     @Override
     public void render(GameContainer gameContainer, Render render) {
-//        render.drawImage(scope, gameContainer.getInput().getMouseX()-31, gameContainer.getInput().getMouseY()-31);
-        render.drawImageTile(tileOne, gameContainer.getInput().getMouseX() - 9, gameContainer.getInput().getMouseY() - 9, (int) frame, 0);
-        System.out.println("Frame: " + (int)frame);
-        if (gameContainer.getInput().isKey(KeyEvent.VK_LEFT)) {
-            if (!hail.isRunning()) hail.play();
-            //stand left
-            System.out.println("Youre moving left.");
-        } else if (gameContainer.getInput().isKeyDown(KeyEvent.VK_RIGHT)) {
-            //animate right
-            System.out.println("Youre moving right.");
-        } else if (gameContainer.getInput().isKey(KeyEvent.VK_RIGHT)) {
-            //stand right
-            System.out.println("Youre standing right");
-        }
+        render.drawImage(background, 0, 0);
+
+        render.drawImageTile(megaMan, 112, 152, 0, blink);
+
     }
 
     public static void main(String[] args) {
-        GameContainer gc = new GameContainer(new GameManager());
-        gc.start();
+        GameContainer gameContainer = new GameContainer(new GameManager());
+        gameContainer.setWidth(256);
+        gameContainer.setHeight(224);
+        gameContainer.setScale(3);
+        gameContainer.start();
     }
 }
